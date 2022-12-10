@@ -1,0 +1,67 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  font-family: sans-serif;
+  padding: 0.8em 1em;
+}
+
+h1.title {
+  margin-bottom: 0.3em;
+}
+
+.timer-box {
+  display: flex;
+  width: 150px;
+  border: 2px solid #555;
+  padding: 0.05em 0.3em;
+  justify-content: flex-end;
+}
+
+.timer-btns {
+  margin-top: 0.5em;
+  display: flex;
+}
+
+.timer-btns button {
+  margin-right: 0.5em;
+  cursor: pointer;
+  width: 8ch;
+}
+
+h2.laps-titile {
+  margin-top: 0.3em;
+  margin-bottom: 0.5em;
+}
+
+ul {
+  width: Max(300px, 50vw);
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+ul li {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2em;
+}
+
+ul li:first-of-type {
+  border-bottom: 2px solid #333;
+  font-weight: bolder;
+}
+
+ul li.green {
+  color: green;
+}
+
+ul li.red {
+  color: red;
+}
