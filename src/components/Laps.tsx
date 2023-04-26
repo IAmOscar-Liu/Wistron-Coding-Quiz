@@ -18,7 +18,6 @@ function Laps() {
   const savedLaps = useTimerStore((data) => data.savedLaps);
 
   const [minLap, maxLap] = useMemo(() => {
-    console.log("22");
     if (savedLaps.length < 2) return [0, 0] as const;
     let minLap = 0;
     let maxLap = 0;
@@ -36,7 +35,6 @@ function Laps() {
       }
     }
     return [minLap, maxLap] as const;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedLaps]);
 
   return (
