@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTimerStore } from "../timerStore";
 
 function CurrentLap() {
-  const currentLap = useTimerStore((data) => data.currentLap);
+  const currentLap = useTimerStore((state) => state.currentLap);
 
   if (!currentLap) return null;
 
@@ -15,7 +15,7 @@ function CurrentLap() {
 }
 
 function Laps() {
-  const savedLaps = useTimerStore((data) => data.savedLaps);
+  const savedLaps = useTimerStore((state) => state.savedLaps);
 
   const [minLap, maxLap] = useMemo(() => {
     if (savedLaps.length < 2) return [0, 0] as const;
