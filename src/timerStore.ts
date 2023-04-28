@@ -5,45 +5,47 @@ type Lap = {
   lapTime: number;
 };
 
-type CounterData = {
+type CounterState = {
   isStarted: boolean;
   time: number;
   currentLap: Lap | null;
   savedLaps: Lap[];
 };
 
+const INITIAL_STATE: CounterState = {
+  isStarted: false,
+  time: 0,
+  currentLap: null,
+  savedLaps: []
+};
+
 const createTimerStore = () => {
-  const data: CounterData = {
-    isStarted: false,
-    time: 0,
-    currentLap: null,
-    savedLaps: []
-  };
+  let state = { ...INITIAL_STATE };
 
   let timeInterval: NodeJS.Timer;
   let resumeAt = 0;
   let sumOfSavedLaps = 0;
   let lastPauseTime = 0;
 
-  const listeners = new Set<(data: CounterData) => void>();
-  const subscribe = (listener: (data: CounterData) => void) => {
+  const listeners = new Set<(state: CounterState) => void>();
+  const subscribe = (listener: (state: CounterState) => void) => {
     listeners.add(listener);
     return () => listeners.delete(listener);
   };
-  const emitChange = () => listeners.forEach((listener) => listener(data));
+  const emitChange = () => listeners.forEach((listener) => listener(state));
 
   return {
     startTimer: () => {
-      data.isStarted = true;
+      state.isStarted = true;
       resumeAt = +new Date();
-      if (!data.currentLap) {
-        data.currentLap = { lapNum: 1, lapTime: 0 };
+      if (!state.currentLap) {
+        state.currentLap = { lapNum: 1, lapTime: 0 };
       }
       timeInterval = setInterval(() => {
         const currentTime = lastPauseTime + +new Date() - resumeAt;
-        data.time = currentTime;
-        data.currentLap = {
-          ...data.currentLap!,
+        state.time = currentTime;
+        state.currentLap = {
+          ...state.currentLap!,
           lapTime: currentTime - sumOfSavedLaps
         };
         emitChange();
@@ -52,17 +54,17 @@ const createTimerStore = () => {
     },
     stopTimer: () => {
       clearInterval(timeInterval);
-      lastPauseTime = data.time;
-      data.isStarted = false;
+      lastPauseTime = state.time;
+      state.isStarted = false;
       emitChange();
     },
     addLap: () => {
-      data.savedLaps = [data.currentLap!, ...data.savedLaps];
-      sumOfSavedLaps = data.savedLaps.reduce(
+      state.savedLaps = [state.currentLap!, ...state.savedLaps];
+      sumOfSavedLaps = state.savedLaps.reduce(
         (acc, cur) => acc + cur.lapTime,
         0
       );
-      data.currentLap = { lapNum: data.savedLaps.length + 1, lapTime: 0 };
+      state.currentLap = { lapNum: state.savedLaps.length + 1, lapTime: 0 };
       emitChange();
     },
     reset: () => {
@@ -70,15 +72,12 @@ const createTimerStore = () => {
       lastPauseTime = 0;
       resumeAt = 0;
       sumOfSavedLaps = 0;
-      data.isStarted = false;
-      data.time = 0;
-      data.currentLap = null;
-      data.savedLaps = []; // empty laps
+      state = { ...INITIAL_STATE };
       emitChange();
     },
     useTimerStore: <SelectorOutput>(
-      selector: (data: CounterData) => SelectorOutput
-    ): SelectorOutput => useSyncExternalStore(subscribe, () => selector(data))
+      selector: (state: CounterState) => SelectorOutput
+    ): SelectorOutput => useSyncExternalStore(subscribe, () => selector(state))
   };
 };
 
