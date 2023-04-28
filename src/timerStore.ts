@@ -1,11 +1,11 @@
 import { useSyncExternalStore } from "react";
 
-type Lap = {
+export type Lap = {
   lapNum: number;
   lapTime: number;
 };
 
-type CounterState = {
+export type CounterState = {
   isStarted: boolean;
   time: number;
   currentLap: Lap | null;
@@ -90,3 +90,5 @@ export const {
   addLap,
   reset
 } = timerStore;
+
+export const displayTime = (time: number) => (time / 1000).toFixed(2);
