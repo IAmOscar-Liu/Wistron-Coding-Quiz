@@ -12,12 +12,12 @@ type CounterState = {
   savedLaps: Lap[];
 };
 
-const INITIAL_STATE: CounterState = {
+const INITIAL_STATE: CounterState = Object.freeze({
   isStarted: false,
   time: 0,
   currentLap: null,
   savedLaps: []
-};
+});
 
 const createTimerStore = () => {
   let state = { ...INITIAL_STATE };
