@@ -1,4 +1,3 @@
-import "./styles.css";
 import {
   useTimerStore,
   startTimer,
@@ -9,8 +8,8 @@ import {
 import Laps from "./components/Laps";
 import TimerBox from "./components/TimerBox";
 
-export default function App() {
-  const isStarted = useTimerStore((data) => data.isStarted);
+function App() {
+  const isStarted = useTimerStore((state) => state.isStarted);
 
   return (
     <div className="App">
@@ -34,3 +33,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
