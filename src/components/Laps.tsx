@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useTimerStore } from "../timerStore";
+import { useTimerStore, displayTime } from "../timerStore";
 
 function CurrentLap() {
   const currentLap = useTimerStore((state) => state.currentLap);
@@ -9,7 +9,7 @@ function CurrentLap() {
   return (
     <li>
       <p>{currentLap.lapNum}</p>
-      <p>{(currentLap.lapTime / 1000).toFixed(2)}</p>
+      <p>{displayTime(currentLap.lapTime)}</p>
     </li>
   );
 }
@@ -52,7 +52,7 @@ function Laps() {
           }
         >
           <p>{lap.lapNum}</p>
-          <p>{(lap.lapTime / 1000).toFixed(2)}</p>
+          <p>{displayTime(lap.lapTime)}</p>
         </li>
       ))}
     </ul>
